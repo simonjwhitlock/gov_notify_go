@@ -8,4 +8,4 @@ to use call the exe with the followin argumens
 
 -messageID : the GUID of the message template to use
 
--messageContent : message personaliasation json block (remember escape chars where needed), eg: "\""personalisation\"": {\""first_name\"": \""Amala\"",\""appointment_date\"": \""1 January 2018 at 1:00PM\"",}"
+-messageContent : message personaliasation json block (remember escape chars where needed), eg: "\\""personalisation\\"": {\\""first_name\\"": \\""Amala\\"",\\""appointment_date\\"": \\""1 January 2018 at 1:00PM\\"",}"

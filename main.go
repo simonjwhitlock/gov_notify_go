@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -20,7 +21,10 @@ var senderID = flag.String("senderID", "", "Sender ID")
 
 func main() {
 	//load env file and read command line arguments.
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	flag.Parse()
 
 	// assign values from env
@@ -51,6 +55,27 @@ func main() {
 		body := fmt.Sprintf(`{"phone_number":"%s",template_id":"%s","personalisation": %s,"sms_sender_id": "%s"}`, phoneNo, *messageID, *messageContent, *senderID)
 		fmt.Println(callUrl)
 		fmt.Println(body)
+
+		client := &http.Client{}
+
+		req, err := http.NewRequest("POST", callUrl, strings.NewReader(body))
+		if err != nil {
+			log.Fatal(err)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer "+token)
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if resp.StatusCode != 201 {
+			log.Println("response status:", resp.Status)
+		}
+		fmt.Println(resp.Body)
+		err = resp.Body.Close()
+		if err != nil {
+			return
+		}
 	}
 }
 

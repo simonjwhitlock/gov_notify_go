@@ -19,8 +19,8 @@ var messageContent = flag.String("messageContent", "", "Message Content")
 var senderID = flag.String("senderID", "", "Sender ID")
 
 func main() {
-	//Load env file and read command line arguments.
-	godotenv.Load(".env")
+	//load env file and read command line arguments.
+	godotenv.Load()
 	flag.Parse()
 
 	// assign values from env
@@ -51,9 +51,7 @@ func main() {
 		body := fmt.Sprintf(`{"phone_number":"%s",template_id":"%s","personalisation": %s,"sms_sender_id": "%s"}`, phoneNo, *messageID, *messageContent, *senderID)
 		fmt.Println(callUrl)
 		fmt.Println(body)
-
 	}
-
 }
 
 func createJWT(key string) (string, int64, error) {
